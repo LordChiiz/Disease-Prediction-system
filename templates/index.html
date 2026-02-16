@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medi-AI System</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">🏥 Medi-AI</div>
+      <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/history">History</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <header class="hero-section">
+        <h1>AI Disease Diagnosis</h1>
+        <p>Select your symptoms below to get an instant AI-powered analysis.</p>
+      </header>
+
+      <form action="/predict" method="POST">
+        <div class="symptom-container">
+          <h3>🔍 Select Symptoms</h3>
+          <div class="symptom-grid">
+            {% for symptom in symptoms %}
+            <label class="symptom-card">
+              <input
+                type="checkbox"
+                name="symptoms"
+                value="{{ symptom }}"
+                {%
+                if
+                selected
+                and
+                symptom
+                in
+                selected
+                %}checked{%
+                endif
+                %}
+              />
+              <span>{{ symptom.replace('_', ' ').capitalize() }}</span>
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <button type="submit" class="analyze-btn">Analyze Symptoms</button>
+      </form>
+
+      {% if prediction %}
+      <div class="result-section" id="result">
+        <div class="result-card">
+          <h2>Diagnosis Result</h2>
+          <div class="disease-badge">{{ prediction }}</div>
+          <div class="confidence-bar">
+            <div class="fill" style="width: {{ confidence }}%;"></div>
+          </div>
+          <p class="confidence-text">
+            AI Confidence: <strong>{{ confidence }}%</strong>
+          </p>
+
+          <div class="actions">
+            <a href="/download_report" class="btn-primary">📄 Download PDF</a>
+
+            <form action="/save_to_db" method="POST" class="save-form">
+              <input
+                type="text"
+                name="patient_name"
+                placeholder="Patient Name"
+                required
+              />
+              <button type="submit" class="btn-secondary">💾 Save to DB</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Analytics Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>📊 Analytics Dashboard</h1>
+        <div style="margin-top: 20px">
+          <a href="/" class="action-btn secondary" style="text-decoration: none"
+            >← Home</a
+          >
+          <a
+            href="/history"
+            class="action-btn secondary"
+            style="text-decoration: none"
+            >View History</a
+          >
+        </div>
+      </header>
+
+      <div
+        class="kpi-grid"
+        style="
+          display: flex;
+          gap: 20px;
+          justify-content: center;
+          margin-bottom: 40px;
+        "
+      >
+        <div
+          style="
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            min-width: 200px;
+          "
+        >
+          <h3 style="margin: 0; color: #7f8c8d">Total Patients Scanned</h3>
+          <p
+            style="
+              font-size: 3em;
+              font-weight: bold;
+              color: #3498db;
+              margin: 10px 0;
+            "
+          >
+            {{ total }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="chart-container"
+        style="
+          background: white;
+          padding: 30px;
+          border-radius: 15px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        "
+      >
+        <canvas id="diseaseChart"></canvas>
+      </div>
+    </div>
+
+    <script>
+      // Get data passed from Python
+      const diseaseLabels = {{ diseases | tojson }};
+      const diseaseCounts = {{ counts | tojson }};
+
+      const ctx = document.getElementById('diseaseChart').getContext('2d');
+      const myChart = new Chart(ctx, {
+          type: 'bar', // Change this to 'pie' or 'doughnut' if you prefer circles!
+          data: {
+              labels: diseaseLabels,
+              datasets: [{
+                  label: '# of Cases',
+                  data: diseaseCounts,
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.6)',
+                      'rgba(54, 162, 235, 0.6)',
+                      'rgba(255, 206, 86, 0.6)',
+                      'rgba(75, 192, 192, 0.6)',
+                      'rgba(153, 102, 255, 0.6)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+    </script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -31,7 +31,15 @@
       <form action="/predict" method="POST">
         <div class="symptom-container">
           <h3>🔍 Select Symptoms</h3>
-          <div class="symptom-grid">
+
+          <input
+            type="text"
+            id="symptomSearch"
+            placeholder="Type to search for a symptom (e.g., headache)..."
+            class="search-bar"
+          />
+
+          <div class="symptom-grid" id="symptomGrid">
             {% for symptom in symptoms %}
             <label class="symptom-card">
               <input
@@ -49,7 +57,9 @@
                 endif
                 %}
               />
-              <span>{{ symptom.replace('_', ' ').capitalize() }}</span>
+              <span class="symptom-text"
+                >{{ symptom.replace('_', ' ').capitalize() }}</span
+              >
             </label>
             {% endfor %}
           </div>
@@ -87,5 +97,31 @@
       </div>
       {% endif %}
     </div>
+
+    <script>
+      document
+        .getElementById("symptomSearch")
+        .addEventListener("input", function () {
+          // Get what the user typed and make it lowercase
+          let filter = this.value.toLowerCase();
+          // Get all the symptom cards
+          let cards = document.querySelectorAll(".symptom-card");
+
+          // Loop through each card
+          cards.forEach(function (card) {
+            // Get the text inside the card
+            let text = card
+              .querySelector(".symptom-text")
+              .textContent.toLowerCase();
+
+            // If the text includes what the user typed, show it. Otherwise, hide it.
+            if (text.includes(filter)) {
+              card.style.display = ""; // Show
+            } else {
+              card.style.display = "none"; // Hide
+            }
+          });
+        });
+    </script>
   </body>
 </html>

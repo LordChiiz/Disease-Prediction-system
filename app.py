@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func # NEW: Needed for counting
 
 app = Flask(__name__)
-app.secret_key = "super_secret_key"
+app.secret_key = "chiiz_secret_key"
 
 # DATABASE CONFIG
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medical_storage.db'
@@ -45,7 +45,7 @@ def predict():
 
         input_data = [0] * len(symptom_list)
         for symptom in selected_symptoms:
-            if symptom in symptom_list:
+            if symptom in symptom_list:                     #One hotdog
                 index = symptom_list.index(symptom)
                 input_data[index] = 1
         
@@ -54,7 +54,7 @@ def predict():
         probabilities = model.predict_proba(input_array)
         confidence = np.max(probabilities) * 100
         
-        session['prediction'] = prediction
+        session['prediction'] = "Brain Damage. Please see the mechanic"
         session['confidence'] = f"{confidence:.2f}"
         session['symptoms'] = selected_symptoms
         session['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

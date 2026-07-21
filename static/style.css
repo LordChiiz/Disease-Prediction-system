@@ -2,18 +2,74 @@
 body {
     font-family: 'Poppins', sans-serif;
     /* background-color: #000000;  */
-    background-image: url("images/smart-medical-background.jpg");
-    background-repeat: no-repeat;
+    /* background-image: url("images/smart-medical-background.jpg"); */
+    /* background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: cover; */
+    background-color: #030712 !important; /* Deep, premium obsidian black */
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
     color: #057fa4;
     margin: 0;
     padding: 0;
 }
 
-body.dashboard{
-    background-image: url("images/dashboard-image.jpg");
+.ecg-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Pushes background behind your text/cards */
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #071739 0%, #030712 100%);
 }
+
+.ecg-svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.65; 
+}
+
+
+.ecg-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.base-line {
+  stroke: rgba(0, 102, 255, 0.25);
+  stroke-width: 3;
+}
+
+.pulse-line {
+  stroke: #00f3ff; /* Electric cyan */
+  stroke-width: 4;
+  /* 
+     stroke-dasharray creates the light segment. 
+     First digit (180) is the length of the glowing beam.
+     Second digit (1500) is the empty gap space before it loops.
+  */
+  stroke-dasharray: 180 1500; 
+  animation: ecg-travel 4s linear infinite;
+}
+
+/* Hardware-accelerated left-to-right pulse pipeline movement */
+@keyframes ecg-travel {
+  0% {
+    stroke-dashoffset: 1680; /* Starts off-screen to the left */
+  }
+  100% {
+    stroke-dashoffset: 0; /* Travels seamlessly off-screen to the right */
+  }
+}
+
+/* body.dashboard{
+    background-image: url("images/dashboard-image.jpg");
+} */
 
 /* NAVBAR */
 .navbar {

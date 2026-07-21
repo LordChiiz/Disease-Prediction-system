@@ -45,7 +45,7 @@ def predict():
 
         input_data = [0] * len(symptom_list)
         for symptom in selected_symptoms:
-            if symptom in symptom_list:                     #One hotdog
+            if symptom in symptom_list:                     #One hotdog                                                                                                                 
                 index = symptom_list.index(symptom)
                 input_data[index] = 1
         
@@ -54,7 +54,7 @@ def predict():
         probabilities = model.predict_proba(input_array)
         confidence = np.max(probabilities) * 100
         
-        session['prediction'] = "Brain Damage. Please see the mechanic"
+        session['prediction'] = prediction
         session['confidence'] = f"{confidence:.2f}"
         session['symptoms'] = selected_symptoms
         session['date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -135,6 +135,19 @@ def dashboard():
                            total=total_patients, 
                            diseases=diseases, 
                            counts=counts)
+
+@app.route('/delete/<int:id>', methods=['POST'])
+def delete_patient(id):
+    record = MedicalReport.query.get_or_404(id)
+    
+    try:
+        db.session.delete(record)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error deleting record: {e}")
+        
+    return redirect(url_for('history')) 
 
 if __name__ == '__main__':
     app.run(debug=True)

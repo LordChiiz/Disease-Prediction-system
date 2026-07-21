@@ -14,6 +14,34 @@
     />
   </head>
   <body>
+    <!--ECG Background -->
+    <div class="ecg-bg-container">
+      <svg viewBox="0 0 1200 400" preserveAspectRatio="none" class="ecg-svg">
+        <!-- Glow Filter Definition -->
+        <defs>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- dim Background Line -->
+        <path
+          class="ecg-line base-line"
+          d="M 0,200 L 350,200 Q 370,185 385,200 L 415,200 L 430,225 L 455,40 L 480,340 L 500,200 L 530,200 Q 550,170 575,200 L 1200,200"
+        />
+
+        <!--bright Traveling Pulse Line -->
+        <path
+          class="ecg-line pulse-line"
+          d="M 0,200 L 350,200 Q 370,185 385,200 L 415,200 L 430,225 L 455,40 L 480,340 L 500,200 L 530,200 Q 550,170 575,200 L 1200,200"
+          filter="url(#glow)"
+        />
+      </svg>
+    </div>
     <nav class="navbar">
       <div class="logo">🏥 Medi-AI</div>
       <div class="nav-links">
@@ -79,7 +107,20 @@
           <p class="confidence-text">
             AI Confidence: <strong>{{ confidence }}%</strong>
           </p>
-
+          <a
+            href="{{ url_for('home') }}"
+            class="btn btn-success btn-lg mt-3"
+            style="
+              text-decoration: none;
+              padding: 10px 20px;
+              background-color: #10b981;
+              color: white;
+              border-radius: 8px;
+              display: inline-block;
+            "
+          >
+            ➕ Start New Patient Consultation
+          </a>
           <div class="actions">
             <a href="/download_report" class="btn-primary">📄 Download PDF</a>
 

@@ -42,10 +42,11 @@ def predict():
         if not selected_symptoms:
             flash('Please select at least one symptom', 'error')
             return render_template('index.html', symptoms=symptom_list)
-
+        
+        #One Hot Vector Transform
         input_data = [0] * len(symptom_list)
         for symptom in selected_symptoms:
-            if symptom in symptom_list:                     #One hotdog                                                                                                                 
+            if symptom in symptom_list:                                                                                                                                 
                 index = symptom_list.index(symptom)
                 input_data[index] = 1
         
@@ -120,11 +121,9 @@ def download_report():
 # === NEW: DASHBOARD ROUTE ===
 @app.route('/dashboard')
 def dashboard():
-    # 1. Count Total Patients
+    # 1. Count Patients
     total_patients = MedicalReport.query.count()
     
-    # 2. Get Disease Counts (e.g., Malaria: 5, Typhoid: 2)
-    # This acts like a "Pivot Table" in Excel
     disease_counts = db.session.query(MedicalReport.disease, func.count(MedicalReport.disease)).group_by(MedicalReport.disease).all()
     
     # Separate the data for the chart (Labels vs. Numbers)

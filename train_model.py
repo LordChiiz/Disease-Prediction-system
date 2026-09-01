@@ -57,6 +57,8 @@ def main():
     accuracy = accuracy_score(y_test, predictions)
     print(f"[RESULT] Overall Classification Accuracy: {accuracy * 100:.2f}%")
 
+
+
     # 6. Artifact Serialization
     print("[INFO] Serializing trained model and symptom feature list for server deployment...")
     model_filename = 'disease_model.pkl'
